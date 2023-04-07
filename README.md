@@ -8,9 +8,9 @@ _Possible Elements:_
 * _Main_ - main program
 * _OrderService_ - service, which collects the products into the order
 * _PrintService_ - service, which prints the receipt of customer order
-* _Order_ - customer's order (collection of offers)
-* _Offer_ - offer or product with size (optional) and price, which customer can select into the order
-* _Extra_ - extra component with the price, which can be attached to particular offer
+* _Order_ - customer's order (collection of products)
+* _Product_ - product or product with size (optional) and price, which customer can select into the order
+* _Extra_ - extra component with the price, which can be attached to particular product
 * _Bonus_ - discount rules to be applied to the customer order
 * _Receipt_ - printable customer's order receipt
 
