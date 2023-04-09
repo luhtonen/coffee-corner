@@ -43,51 +43,51 @@ class OrderServiceTest {
         verify(orderRepository, times(1)).addProduct(any(Customer.class), any(Product.class));
     }
 
-    @Test
-    @DisplayName("should throw an exception when product is null")
-    void testAddExtraWhenProductNull() {
-        assertThatThrownBy(() -> service.addExtra(null, null))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("'product' must not be null");
-    }
+//    @Test
+//    @DisplayName("should throw an exception when product is null")
+//    void testAddExtraWhenProductNull() {
+//        assertThatThrownBy(() -> service.addExtra(null, null))
+//            .isInstanceOf(IllegalArgumentException.class)
+//            .hasMessage("'product' must not be null");
+//    }
+//
+//    @Test
+//    @DisplayName("should throw an exception when extra is null")
+//    void testAddExtraWhenExtraNull() {
+//        assertThatThrownBy(() -> service.addExtra(mockProduct(), null))
+//            .isInstanceOf(IllegalArgumentException.class)
+//            .hasMessage("'extra' must not be null");
+//    }
+//
+//    @Test
+//    @DisplayName("should throw an exception when trying to add extra to incorrect product type")
+//    void testAddExtraToSnack() {
+//        assertThatThrownBy(() -> service.addExtra(mockSnack(), mockExtra()))
+//            .isInstanceOf(IllegalArgumentException.class)
+//            .hasMessage("Extra cannot be added to this product type");
+//    }
 
-    @Test
-    @DisplayName("should throw an exception when extra is null")
-    void testAddExtraWhenExtraNull() {
-        assertThatThrownBy(() -> service.addExtra(mockProduct(), null))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("'extra' must not be null");
-    }
-
-    @Test
-    @DisplayName("should throw an exception when trying to add extra to incorrect product type")
-    void testAddExtraToSnack() {
-        assertThatThrownBy(() -> service.addExtra(mockSnack(), mockExtra()))
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessage("Extra cannot be added to this product type");
-    }
-
-    @Test
-    @DisplayName("should throw an exception when trying to add extra to incorrect product type")
-    void testAddExtra() {
-        final var product = mockProduct();
-        final var extra = mockExtra();
-        // not extras
-        assertThat(product.extras()).isEmpty();
-
-        // add new extra
-        service.addExtra(product, extra);
-        assertThat(product.extras()).hasSize(1);
-
-        final var anotherExtra = mockExtraFoamedMilk();
-        // add another extra
-        service.addExtra(product, anotherExtra);
-        assertThat(product.extras()).hasSize(2);
-
-        // add same extra second time
-        service.addExtra(product, anotherExtra);
-        assertThat(product.extras()).hasSize(2); // no doubles
-    }
+//    @Test
+//    @DisplayName("should throw an exception when trying to add extra to incorrect product type")
+//    void testAddExtra() {
+//        final var product = mockProduct();
+//        final var extra = mockExtra();
+//        // not extras
+//        assertThat(product.extras()).isEmpty();
+//
+//        // add new extra
+//        service.addExtra(product, extra);
+//        assertThat(product.extras()).hasSize(1);
+//
+//        final var anotherExtra = mockExtraFoamedMilk();
+//        // add another extra
+//        service.addExtra(product, anotherExtra);
+//        assertThat(product.extras()).hasSize(2);
+//
+//        // add same extra second time
+//        service.addExtra(product, anotherExtra);
+//        assertThat(product.extras()).hasSize(2); // no doubles
+//    }
 
     @Test
     @DisplayName("should retrieve customer order")

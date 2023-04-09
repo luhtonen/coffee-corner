@@ -7,6 +7,7 @@ import org.elu.coffeecorner.repository.OrderRepository;
 import org.elu.coffeecorner.utils.AssertUtils;
 
 import java.util.List;
+import java.util.Set;
 
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
@@ -17,16 +18,15 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void addProduct(final Customer customer, final Product product) {
-        orderRepository.addProduct(customer, product);
+        addProduct(customer, product, product.extras());
     }
 
     @Override
-    public void addExtra(final Product product, final Extra extra) {
+    public void addProduct(final Customer customer, final Product product, Set<Extra> withExtras) {
         AssertUtils.assertNotNull("product", product);
-        AssertUtils.assertNotNull("extra", extra);
-        AssertUtils.assertCondition(extra.forProduct() == product.productType(),
-                                    "Extra cannot be added to this product type");
-        product.extras().add(extra);
+        AssertUtils.assertNotNull("extra", withExtras);
+        final var productToAdd = new Product(product.name(), product.productType(), product.price(), withExtras);
+        orderRepository.addProduct(customer, productToAdd);
     }
 
     @Override

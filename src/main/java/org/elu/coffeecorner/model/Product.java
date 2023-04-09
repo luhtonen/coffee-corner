@@ -3,7 +3,6 @@ package org.elu.coffeecorner.model;
 import org.elu.coffeecorner.utils.AssertUtils;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.Set;
 
 public record Product(String name, ProductType productType, BigDecimal price, Set<Extra> extras) {
@@ -20,6 +19,6 @@ public record Product(String name, ProductType productType, BigDecimal price, Se
     }
 
     public Product(String name, ProductType productType, BigDecimal price) {
-        this(name, productType, price, new HashSet<>());
+        this(name, productType, price, Set.of());
     }
 }
