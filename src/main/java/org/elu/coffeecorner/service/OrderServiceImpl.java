@@ -1,13 +1,11 @@
 package org.elu.coffeecorner.service;
 
 import org.elu.coffeecorner.model.Customer;
-import org.elu.coffeecorner.model.Extra;
 import org.elu.coffeecorner.model.Product;
 import org.elu.coffeecorner.repository.OrderRepository;
 import org.elu.coffeecorner.utils.AssertUtils;
 
 import java.util.List;
-import java.util.Set;
 
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
@@ -18,15 +16,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void addProduct(final Customer customer, final Product product) {
-        addProduct(customer, product, product.extras());
-    }
-
-    @Override
-    public void addProduct(final Customer customer, final Product product, Set<Extra> withExtras) {
+        AssertUtils.assertNotNull("customer", customer);
         AssertUtils.assertNotNull("product", product);
-        AssertUtils.assertNotNull("extra", withExtras);
-        final var productToAdd = new Product(product.name(), product.productType(), product.price(), withExtras);
-        orderRepository.addProduct(customer, productToAdd);
+        orderRepository.addProduct(customer, product);
     }
 
     @Override
