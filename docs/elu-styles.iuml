@@ -1,0 +1,4 @@
+skinparam backgroundColor #e6f5fa
+skinparam ParticipantBackgroundColor #9dc20f
+skinparam QueueBackgroundColor #9dc20f
+skinparam responseMessageBelowArrow true

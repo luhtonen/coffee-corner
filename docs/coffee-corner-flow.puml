@@ -1,0 +1,62 @@
+@startuml
+
+!include elu-styles.iuml
+
+title Charlene's Coffee Corner flow
+
+actor Cashier as cashier
+participant Application as app
+participant "Product service" as productSrv
+participant "Order service" as orderSrv
+participant "Order repository" as repo
+participant "Print service" as printSrv
+
+cashier -> app: new order
+activate app
+app --> cashier: new customer
+cashier -> app: show available products
+app -> productSrv: get available products
+activate productSrv
+productSrv --> app: available products
+deactivate productSrv
+app --> cashier: available products
+cashier -> app: show available extras
+app -> productSrv: get available extras
+activate productSrv
+productSrv --> app: available extras
+deactivate productSrv
+app --> cashier: available extras
+loop until client is ready
+    cashier -> app: prepare product with extras
+    app --> cashier: prepared product
+end
+cashier -> app: place order with selected products \nfor new customer
+loop for each product in the list
+    app -> orderSrv: add product
+    activate orderSrv
+    orderSrv -> orderSrv: validate input
+    orderSrv -> repo: add product
+    deactivate orderSrv
+end
+cashier -> app: pay
+app -> orderSrv: get products for customer
+activate orderSrv
+orderSrv --> app: list of products
+deactivate orderSrv
+app -> printSrv: print receipt
+activate printSrv
+printSrv -> printSrv: calculate combo discounts
+printSrv -> printSrv: calculate total price
+loop for each product in list
+    printSrv -> printSrv: build receipt line for product
+    loop for each extra in product's extras
+        printSrv -> printSrv: build receipt line for extra
+    end
+end
+printSrv -> printSrv: collect all lines \ninto single string
+printSrv --> app: receipt as string
+deactivate printSrv
+app --> cashier: show receipt
+deactivate app
+
+@enduml
