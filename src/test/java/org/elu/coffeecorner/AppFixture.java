@@ -1,10 +1,12 @@
 package org.elu.coffeecorner;
 
 import org.elu.coffeecorner.model.Customer;
+import org.elu.coffeecorner.model.Extra;
 import org.elu.coffeecorner.model.Product;
 import org.elu.coffeecorner.model.ProductType;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 public final class AppFixture {
     private AppFixture() {}
@@ -18,10 +20,22 @@ public final class AppFixture {
     }
 
     public static Product mockProduct() {
-        return new Product("Coffee (small)", ProductType.Coffee, new BigDecimal("2.50"));
+        return mockProduct(Set.of());
+    }
+
+    public static Product mockProduct(final Set<Extra> extras) {
+        return new Product("Coffee (small)", ProductType.Coffee, BigDecimal.valueOf(2.50), extras);
     }
 
     public static Product mockSnack() {
-        return new Product("Bacon Roll", ProductType.Snack, new BigDecimal("4.50"));
+        return new Product("Bacon Roll", ProductType.Snack, BigDecimal.valueOf(4.50));
+    }
+
+    public static Extra mockExtra(final String name) {
+        return mockExtra(name, 0.30);
+    }
+
+    public static Extra mockExtra(final String name, final double price) {
+        return new Extra(name, ProductType.Coffee, BigDecimal.valueOf(price));
     }
 }

@@ -4,6 +4,7 @@ import org.elu.coffeecorner.model.Extra;
 import org.elu.coffeecorner.model.ExtraDiscount;
 import org.elu.coffeecorner.model.Product;
 import org.elu.coffeecorner.model.ProductType;
+import org.elu.coffeecorner.utils.AssertUtils;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -29,6 +30,7 @@ public class PrintServiceImpl implements PrintService {
 
     @Override
     public String printReceipt(final List<Product> order) {
+        AssertUtils.assertNotEmpty("order", order);
         final var now = LocalDateTime.now();
         final var comboDiscounts = calculateComboDiscount(order);
         final BigDecimal total = calculateTotal(order, comboDiscounts);
@@ -46,13 +48,13 @@ public class PrintServiceImpl implements PrintService {
         ));
     }
 
-    private String buildProducts(final List<Product> order, final List<ExtraDiscount> comboDiscounts) {
+    String buildProducts(final List<Product> order, final List<ExtraDiscount> comboDiscounts) {
         return order.stream()
                     .map(p -> buildProductLines(p, comboDiscounts))
                     .collect(Collectors.joining(LINE_END));
     }
 
-    private String buildProductLines(final Product product, final List<ExtraDiscount> comboDiscounts) {
+    String buildProductLines(final Product product, final List<ExtraDiscount> comboDiscounts) {
         final var builder = new StringBuilder();
         final var pos = product.name().length() > 26 ? product.name().lastIndexOf(" ", 26) : -1;
         final var nameEnd = pos > 0 ? product.name().substring(pos + 1) : product.name();
@@ -89,7 +91,7 @@ public class PrintServiceImpl implements PrintService {
         return builder.toString();
     }
 
-    private BigDecimal calculateTotal(final List<Product> order, final List<ExtraDiscount> comboDiscounts) {
+    BigDecimal calculateTotal(final List<Product> order, final List<ExtraDiscount> comboDiscounts) {
         final var comboDiscount = comboDiscounts.stream()
                                                 .map(ExtraDiscount::getPrice)
                                                 .reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -104,7 +106,7 @@ public class PrintServiceImpl implements PrintService {
         return priceTotal.add(extraTotal).subtract(comboDiscount);
     }
 
-    private List<ExtraDiscount> calculateComboDiscount(final List<Product> products) {
+    List<ExtraDiscount> calculateComboDiscount(final List<Product> products) {
         final var snacks = products.stream().filter(p -> p.productType() == ProductType.Snack).count();
         final var comboCount = Math.min(products.size() - snacks, snacks);
         return comboCount > 0 ?
